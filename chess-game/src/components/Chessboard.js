@@ -1,7 +1,7 @@
 import React from "react";
 import "./Chessboard.css";
 
-function Chessboard({ playerColor = "white" }) {
+function Chessboard({ playerColor = "white", rowL, columnL }) {
   // 8 x 8 chessboard
   const rows = [];
   // row labels
@@ -37,7 +37,9 @@ function Chessboard({ playerColor = "white" }) {
 
   //handle square click
   const handleSquareClick = (row, column) => {
-    console.log(`Clicked on square: ${row}, ${column}`);
+    const clickedRowLabel = rowLabels[row];
+    const clickedColumnLabel = columnLabels[column];
+    console.log(`Clicked on square: ${clickedColumnLabel} ${clickedRowLabel}`);
     // need to add piece movement logic
   };
 
