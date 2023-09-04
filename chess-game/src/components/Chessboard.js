@@ -30,7 +30,7 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
       <React.Fragment key={i}>
         <div className="row-label">{rowLabels[i]}</div>
         {columns}
-        <div className="row-label">{rowLabels[i]}</div>
+        <div className="row-label"></div>
       </React.Fragment>
     );
   }
@@ -47,9 +47,7 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
     <div className="chessboard">
       <div></div>
       {columnLabels.map((label, index) => (
-        <div key={index} className="column-label">
-          {label}
-        </div>
+        <div></div>
       ))}
       <div></div>
       {rows}
