@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Chessboard.css";
 
 function Chessboard({ playerColor = "white", rowL, columnL }) {
+  // chess board initial state
+  const [chessboard, setChessboard] = useState([
+    ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
+    ["♟︎", "♟︎", "♟︎", "♟︎", "♟︎", "♟︎", "♟︎", "♟︎"],
+    ["", "", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", "", ""],
+    ["", "", "", "", "", "", "", ""],
+    ["♙", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
+    ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"],
+  ]);
+
   // 8 x 8 chessboard
   const rows = [];
   // row labels
