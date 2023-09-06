@@ -14,6 +14,25 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
     columnLabels = columnLabels.reverse();
   }
 
+  const pieces = {
+    white: {
+      king: "♔",
+      queen: "♕",
+      rook: "♖",
+      bishop: "♗",
+      knight: "♘",
+      pawn: "♙",
+    },
+    black: {
+      king: "♚",
+      queen: "♛",
+      rook: "♜",
+      bishop: "♝",
+      knight: "♞",
+      pawn: "♟︎",
+    },
+  };
+
   // create chessboard with alternating colors using 2 for loops
 
   for (let i = 0; i < 8; i++) {
