@@ -89,7 +89,9 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
           key={`${i}-${j}`}
           className={`square ${squareColor}`}
           onClick={() => handleSquareClick(i, j)}
-        ></div>
+        >
+          {chessboard[i][j]}
+        </div>
       );
     }
     rows.push(
