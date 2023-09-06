@@ -13,6 +13,38 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
     ["♙", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
     ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"],
   ]);
+  // selectedPiece state
+  const [selectedPiece, setSelectedPiece] = useState(null);
+  // selectedPiecePosition state
+  const [selectedPiecePosition, setSelectedPiecePosition] = useState(null);
+  // selectedPiecePossibleMoves state
+  const [selectedPiecePossibleMoves, setSelectedPiecePossibleMoves] = useState(
+    []
+  );
+  // capturedPieces state
+  const [capturedPieces, setCapturedPieces] = useState([]);
+  // selected square state
+  const [selectedSquare, setSelectedSquare] = useState(null);
+  // check state
+  const [check, setCheck] = useState(false);
+  // checkmate state
+  const [checkmate, setCheckmate] = useState(false);
+  // stalemate state
+  const [stalemate, setStalemate] = useState(false);
+  // draw state
+  const [draw, setDraw] = useState(false);
+  // castling state
+  const [castling, setCastling] = useState(false);
+  // en passant state
+  const [enPassant, setEnPassant] = useState(false);
+  // promotion state
+  const [promotion, setPromotion] = useState(false);
+  // player turn state
+  const [playerTurn, setPlayerTurn] = useState("white");
+  // game status state
+  const [gameStatus, setGameStatus] = useState("active");
+  // game history state
+  const [gameHistory, setGameHistory] = useState([]);
 
   // 8 x 8 chessboard
   const rows = [];
@@ -26,6 +58,7 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
     columnLabels = columnLabels.reverse();
   }
 
+  //get pieces from state and assign to variables
   const pieces = {
     white: {
       king: "♔",
@@ -74,6 +107,20 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
     const clickedColumnLabel = columnLabels[column];
     console.log(`Clicked on square: ${clickedColumnLabel} ${clickedRowLabel}`);
     // need to add piece movement logic
+    const clickedPiece = chessboard[row][column];
+    if (selectedPiece) {
+      const newChessboard = [...chessboard];
+      newChessboard[selectedSquare.row][selectedSquare.column] = "";
+      newChessboard[row][column] = selectedPiece;
+      setChessboard(newChessboard);
+      setSelectedPiece(null);
+      setSelectedSquare(null);
+      setPlayerTurn(playerTurn === "white" ? "black" : "white");
+    } else {
+      setSelectedPiece(clickedPiece);
+      setSelectedSquare({ row, column });
+    }
+
     // need to add piece selection logic
     // need to add piece capture logic
     // need to add piece promotion logic
