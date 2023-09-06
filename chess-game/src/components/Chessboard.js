@@ -14,6 +14,8 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
     columnLabels = columnLabels.reverse();
   }
 
+  // create chessboard with alternating colors using 2 for loops
+
   for (let i = 0; i < 8; i++) {
     const columns = [];
     for (let j = 0; j < 8; j++) {
@@ -41,6 +43,14 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
     const clickedColumnLabel = columnLabels[column];
     console.log(`Clicked on square: ${clickedColumnLabel} ${clickedRowLabel}`);
     // need to add piece movement logic
+    // need to add piece selection logic
+    // need to add piece capture logic
+    // need to add piece promotion logic
+    // need to add checkmate logic
+    // need to add stalemate logic
+    // need to add draw logic
+    // need to add castling logic
+    // need to add en passant logic
   };
 
   return (
