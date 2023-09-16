@@ -118,18 +118,6 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
     // console.log(`row: ${row}, column: ${column}`);
     // need to add piece movement logic
     const clickedPiece = chessboard[row][column];
-    if (selectedPiece) {
-      const newChessboard = [...chessboard];
-      newChessboard[selectedSquare.row][selectedSquare.column] = "";
-      newChessboard[row][column] = selectedPiece;
-      setChessboard(newChessboard);
-      setSelectedPiece(null);
-      setSelectedSquare(null);
-      setPlayerTurn(playerTurn === "white" ? "black" : "white");
-    } else {
-      setSelectedPiece(clickedPiece);
-      setSelectedSquare({ row, column });
-    }
 
     if (selectedPiece) {
       const isPossibleMove = possibleMoves.some(
