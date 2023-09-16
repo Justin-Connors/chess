@@ -21,6 +21,8 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
   const [selectedPiecePossibleMoves, setSelectedPiecePossibleMoves] = useState(
     []
   );
+  const [possibleMoves, setPossibleMoves] = useState([]);
+
   // capturedPieces state
   const [capturedPieces, setCapturedPieces] = useState([]);
   // selected square state
@@ -84,10 +86,15 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
     const columns = [];
     for (let j = 0; j < 8; j++) {
       const squareColor = (i + j) % 2 === 0 ? "white" : "black";
+      const isPossibleMove = possibleMoves.some(
+        (move) => move.row === i && move.column === j
+      );
+      const squareClass = isPossibleMove ? "possible-move" : squareColor;
+
       columns.push(
         <div
           key={`${i}-${j}`}
-          className={`square ${squareColor}`}
+          className={`square ${squareClass}`}
           onClick={() => handleSquareClick(i, j)}
         >
           {chessboard[i][j]}
@@ -105,9 +112,10 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
 
   //handle square click
   const handleSquareClick = (row, column) => {
-    const clickedRowLabel = rowLabels[row];
-    const clickedColumnLabel = columnLabels[column];
-    console.log(`Clicked on square: ${clickedColumnLabel} ${clickedRowLabel}`);
+    // const clickedRowLabel = rowLabels[row];
+    // const clickedColumnLabel = columnLabels[column];
+    // console.log(`Clicked on square: ${clickedColumnLabel} ${clickedRowLabel}`);
+    // console.log(`row: ${row}, column: ${column}`);
     // need to add piece movement logic
     const clickedPiece = chessboard[row][column];
     if (selectedPiece) {
@@ -123,6 +131,51 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
       setSelectedSquare({ row, column });
     }
 
+    if (selectedPiece) {
+      const isPossibleMove = possibleMoves.some(
+        (move) => move.row === row && move.column === column
+      );
+
+      if (isPossibleMove) {
+        // if the move is possible, move the piece and clear possible moves
+        const newChessboard = [...chessboard];
+        newChessboard[selectedSquare.row][selectedSquare.column] = "";
+        newChessboard[row][column] = selectedPiece;
+        setChessboard(newChessboard);
+        setSelectedPiece(null);
+        setSelectedSquare(null);
+        setPossibleMoves([]);
+        setPlayerTurn(playerTurn === "white" ? "black" : "white");
+      } else {
+        // if move is not possible, deselect the piece
+        setSelectedPiece(null);
+        setSelectedSquare(null);
+        setPossibleMoves([]);
+      }
+    } else {
+      // if no piece is selected, select the clicked piece and calculate possible moves
+      setSelectedPiece(clickedPiece);
+      setSelectedSquare({ row, column });
+      calculatePossibleMoves(clickedPiece, row, column);
+    }
+
+    if (selectedPiece === pieces.white.pawn) {
+      const forwardOne = chessboard[row - 1][column] === "";
+      const forwardTwo = row === 6 && chessboard[row - 2][column] === "";
+      const captureLeft =
+        column > 0 && chessboard[row - 1][column - 1].startsWith("♟︎");
+      const captureRight =
+        column < 7 && chessboard[row - 1][column + 1].startsWith("♟︎");
+
+      let possibleMoves = [];
+      if (forwardOne) possibleMoves.push({ row: row - 1, column });
+      if (forwardTwo) possibleMoves.push({ row: row - 2, column });
+      if (captureLeft) possibleMoves.push({ row: row - 1, column: column - 1 });
+      if (captureRight)
+        possibleMoves.push({ row: row - 1, column: column + 1 });
+
+      setSelectedPiecePossibleMoves(possibleMoves);
+    }
     // need to add piece selection logic
     // need to add piece capture logic
     // need to add piece promotion logic
@@ -131,6 +184,23 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
     // need to add draw logic
     // need to add castling logic
     // need to add en passant logic
+  };
+
+  const calculatePossibleMoves = (piece, row, column) => {
+    let moves = [];
+
+    // Calculate possible moves based on type of piece
+
+    if (piece === pieces.white.pawn) {
+      if (row > 0 && chessboard[row - 1][column] === "") {
+        moves.push({ row: row - 1, column });
+      }
+      if (row === 6 && chessboard[row - 2][column] === "") {
+        moves.push({ row: row - 2, column });
+      }
+    }
+
+    setPossibleMoves(moves);
   };
 
   return (

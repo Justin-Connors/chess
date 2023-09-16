@@ -21,7 +21,7 @@
 }
 
 .black {
-  background-color: #2e2c2c;
+  background-color: #615d5d;
 }
 
 .row-label,
@@ -30,4 +30,8 @@
   align-items: center;
   justify-content: center;
   font-size: 24px;
+}
+
+.possible-move {
+  background-color: rgb(82, 190, 82);
 }
