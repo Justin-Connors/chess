@@ -14,6 +14,8 @@
   justify-content: center;
   font-size: 48px;
   border: 2px solid rgb(0, 0, 0);
+  cursor: pointer;
+  user-select: none;
 }
 
 .white {
@@ -34,4 +36,8 @@
 
 .possible-move {
   background-color: rgb(82, 190, 82);
+}
+
+.capturable-piece {
+  background-color: rgb(189, 85, 82);
 }

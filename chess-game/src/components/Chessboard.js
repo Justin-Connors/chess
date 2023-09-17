@@ -22,6 +22,7 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
     []
   );
   const [possibleMoves, setPossibleMoves] = useState([]);
+  const [capturablePieces, setCapturablePieces] = useState([]);
 
   // capturedPieces state
   const [capturedPieces, setCapturedPieces] = useState([]);
@@ -89,7 +90,14 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
       const isPossibleMove = possibleMoves.some(
         (move) => move.row === i && move.column === j
       );
-      const squareClass = isPossibleMove ? "possible-move" : squareColor;
+      const isCapturablePiece = capturablePieces.some(
+        (piece) => piece.row === i && piece.column === j
+      );
+      const squareClass = isPossibleMove
+        ? "possible-move"
+        : isCapturablePiece
+        ? "capturable-piece"
+        : squareColor;
 
       columns.push(
         <div
@@ -116,7 +124,7 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
     // const clickedColumnLabel = columnLabels[column];
     // console.log(`Clicked on square: ${clickedColumnLabel} ${clickedRowLabel}`);
     // console.log(`row: ${row}, column: ${column}`);
-    // need to add piece movement logic
+
     const clickedPiece = chessboard[row][column];
 
     if (selectedPiece) {
@@ -164,7 +172,6 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
 
       setSelectedPiecePossibleMoves(possibleMoves);
     }
-    // need to add piece selection logic
     // need to add piece capture logic
     // need to add piece promotion logic
     // need to add checkmate logic
@@ -176,6 +183,7 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
 
   const calculatePossibleMoves = (piece, row, column) => {
     let moves = [];
+    let captures = [];
 
     // Calculate possible moves based on type of piece
 
@@ -186,9 +194,36 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
       if (row === 6 && chessboard[row - 2][column] === "") {
         moves.push({ row: row - 2, column });
       }
+      if (
+        row > 0 &&
+        column > 0 &&
+        chessboard[row - 1][column - 1].startsWith(
+          pieces.black.pawn,
+          pieces.black.bishop,
+          pieces.black.knight,
+          pieces.black.rook,
+          pieces.black.queen
+        )
+      ) {
+        captures.push({ row: row - 1, column: column - 1 });
+      }
+      if (
+        row > 0 &&
+        column < 7 &&
+        chessboard[row - 1][column + 1].startsWith(
+          pieces.black.pawn,
+          pieces.black.bishop,
+          pieces.black.knight,
+          pieces.black.rook,
+          pieces.black.queen
+        )
+      ) {
+        captures.push({ row: row - 1, column: column + 1 });
+      }
     }
 
     setPossibleMoves(moves);
+    setCapturablePieces(captures);
   };
 
   return (
