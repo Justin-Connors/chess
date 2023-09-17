@@ -131,8 +131,11 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
       const isPossibleMove = possibleMoves.some(
         (move) => move.row === row && move.column === column
       );
+      const isCapturablePiece = capturablePieces.some(
+        (piece) => piece.row === row && piece.column === column
+      );
 
-      if (isPossibleMove) {
+      if (isPossibleMove || isCapturablePiece) {
         // if the move is possible, move the piece and clear possible moves
         const newChessboard = [...chessboard];
         newChessboard[selectedSquare.row][selectedSquare.column] = "";
@@ -141,12 +144,14 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
         setSelectedPiece(null);
         setSelectedSquare(null);
         setPossibleMoves([]);
+        setCapturablePieces([]);
         setPlayerTurn(playerTurn === "white" ? "black" : "white");
       } else {
         // if move is not possible, deselect the piece
         setSelectedPiece(null);
         setSelectedSquare(null);
         setPossibleMoves([]);
+        setCapturablePieces([]);
       }
     } else {
       // if no piece is selected, select the clicked piece and calculate possible moves
@@ -159,9 +164,15 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
       const forwardOne = chessboard[row - 1][column] === "";
       const forwardTwo = row === 6 && chessboard[row - 2][column] === "";
       const captureLeft =
-        column > 0 && chessboard[row - 1][column - 1].startsWith("♟︎");
+        column > 0 &&
+        chessboard[row - 1][column - 1].startsWith(
+          "♟︎" || "♝" || "♞" || "♜" || "♛"
+        );
       const captureRight =
-        column < 7 && chessboard[row - 1][column + 1].startsWith("♟︎");
+        column < 7 &&
+        chessboard[row - 1][column + 1].startsWith(
+          "♟︎" || "♝" || "♞" || "♜" || "♛"
+        );
 
       let possibleMoves = [];
       if (forwardOne) possibleMoves.push({ row: row - 1, column });
@@ -198,11 +209,7 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
         row > 0 &&
         column > 0 &&
         chessboard[row - 1][column - 1].startsWith(
-          pieces.black.pawn,
-          pieces.black.bishop,
-          pieces.black.knight,
-          pieces.black.rook,
-          pieces.black.queen
+          "♟︎" || "♝" || "♞" || "♜" || "♛"
         )
       ) {
         captures.push({ row: row - 1, column: column - 1 });
@@ -211,11 +218,7 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
         row > 0 &&
         column < 7 &&
         chessboard[row - 1][column + 1].startsWith(
-          pieces.black.pawn,
-          pieces.black.bishop,
-          pieces.black.knight,
-          pieces.black.rook,
-          pieces.black.queen
+          "♟︎" || "♝" || "♞" || "♜" || "♛"
         )
       ) {
         captures.push({ row: row - 1, column: column + 1 });
