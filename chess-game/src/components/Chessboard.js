@@ -120,10 +120,10 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
 
   //handle square click
   const handleSquareClick = (row, column) => {
-    // const clickedRowLabel = rowLabels[row];
-    // const clickedColumnLabel = columnLabels[column];
-    // console.log(`Clicked on square: ${clickedColumnLabel} ${clickedRowLabel}`);
-    // console.log(`row: ${row}, column: ${column}`);
+    const clickedRowLabel = rowLabels[row];
+    const clickedColumnLabel = columnLabels[column];
+    console.log(`Clicked on square: ${clickedColumnLabel} ${clickedRowLabel}`);
+    console.log(`row: ${row}, column: ${column}`);
 
     const clickedPiece = chessboard[row][column];
 
@@ -159,7 +159,7 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
       setSelectedSquare({ row, column });
       calculatePossibleMoves(clickedPiece, row, column);
     }
-
+    // pawn logic
     if (selectedPiece === pieces.white.pawn) {
       const forwardOne = chessboard[row - 1][column] === "";
       const forwardTwo = row === 6 && chessboard[row - 2][column] === "";
@@ -183,6 +183,40 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
 
       setSelectedPiecePossibleMoves(possibleMoves);
     }
+    // knight logic
+    if (selectedPiece === pieces.white.knight) {
+      // knight possible moves
+      const possibleMoves = [];
+      if (row > 1 && column > 0)
+        possibleMoves.push({ row: row - 2, column: column - 1 });
+      if (row > 1 && column < 7)
+        possibleMoves.push({ row: row - 2, column: column + 1 });
+      if (row > 0 && column > 1)
+        possibleMoves.push({ row: row - 1, column: column - 2 });
+      if (row > 0 && column < 6)
+        possibleMoves.push({ row: row - 1, column: column + 2 });
+      if (row < 7 && column > 1)
+        possibleMoves.push({ row: row + 1, column: column - 2 });
+      if (row < 7 && column < 6)
+        possibleMoves.push({ row: row + 1, column: column + 2 });
+      if (row < 6 && column > 0)
+        possibleMoves.push({ row: row + 2, column: column - 1 });
+      if (row < 6 && column < 7)
+        possibleMoves.push({ row: row + 2, column: column + 1 });
+
+      //knight capture moves
+      const captures = [];
+      if (
+        row > 1 &&
+        column > 0 &&
+        chessboard[row - 2][column - 1].startsWith(
+          "♟︎" || "♝" || "♞" || "♜" || "♛"
+        )
+      )
+        captures.push({ row: row - 2, column: column - 1 });
+
+      setSelectedPiecePossibleMoves(possibleMoves);
+    }
     // need to add piece capture logic
     // need to add piece promotion logic
     // need to add checkmate logic
@@ -197,7 +231,7 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
     let captures = [];
 
     // Calculate possible moves based on type of piece
-
+    // Pawn possible moves
     if (piece === pieces.white.pawn) {
       if (row > 0 && chessboard[row - 1][column] === "") {
         moves.push({ row: row - 1, column });
@@ -222,6 +256,43 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
         )
       ) {
         captures.push({ row: row - 1, column: column + 1 });
+      }
+    }
+    // Knight possible moves
+    if (piece === pieces.white.knight) {
+      if (row > 1 && column > 0) {
+        moves.push({ row: row - 2, column: column - 1 });
+      }
+      if (row > 1 && column < 7) {
+        moves.push({ row: row - 2, column: column + 1 });
+      }
+      if (row > 0 && column > 1) {
+        moves.push({ row: row - 1, column: column - 2 });
+      }
+      if (row > 0 && column < 6) {
+        moves.push({ row: row - 1, column: column + 2 });
+      }
+      if (row < 7 && column > 1) {
+        moves.push({ row: row + 1, column: column - 2 });
+      }
+      if (row < 7 && column < 6) {
+        moves.push({ row: row + 1, column: column + 2 });
+      }
+      if (row < 6 && column > 0) {
+        moves.push({ row: row + 2, column: column - 1 });
+      }
+      if (row < 6 && column < 7) {
+        moves.push({ row: row + 2, column: column + 1 });
+      }
+      // knight capture moves
+      if (
+        row > 1 &&
+        column > 0 &&
+        chessboard[row - 2][column - 1].startsWith(
+          "♟︎" || "♝" || "♞" || "♜" || "♛"
+        )
+      ) {
+        captures.push({ row: row - 2, column: column - 1 });
       }
     }
 
