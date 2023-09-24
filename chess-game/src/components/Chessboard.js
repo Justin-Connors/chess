@@ -268,6 +268,52 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
       }
       setSelectedPiecePossibleMoves(possibleMoves);
     }
+    // bishop logic
+    if (selectedPiece === pieces.white.bishop) {
+      const possibleMoves = [];
+      const captures = [];
+      for (let i = row - 1, j = column - 1; i >= 0 && j >= 0; i--, j--) {
+        if (chessboard[i][j] === "") {
+          possibleMoves.push({ row: i, column: j });
+        } else {
+          if (chessboard[i][j].startsWith("♟︎" || "♝" || "♞" || "♜" || "♛")) {
+            captures.push({ row: i, column: j });
+          }
+          break;
+        }
+      }
+      for (let i = row - 1, j = column + 1; i >= 0 && j < 8; i--, j++) {
+        if (chessboard[i][j] === "") {
+          possibleMoves.push({ row: i, column: j });
+        } else {
+          if (chessboard[i][j].startsWith("♟︎" || "♝" || "♞" || "♜" || "♛")) {
+            captures.push({ row: i, column: j });
+          }
+          break;
+        }
+      }
+      for (let i = row + 1, j = column - 1; i < 8 && j >= 0; i++, j--) {
+        if (chessboard[i][j] === "") {
+          possibleMoves.push({ row: i, column: j });
+        } else {
+          if (chessboard[i][j].startsWith("♟︎" || "♝" || "♞" || "♜" || "♛")) {
+            captures.push({ row: i, column: j });
+          }
+          break;
+        }
+      }
+      for (let i = row + 1, j = column + 1; i < 8 && j < 8; i++, j++) {
+        if (chessboard[i][j] === "") {
+          possibleMoves.push({ row: i, column: j });
+        } else {
+          if (chessboard[i][j].startsWith("♟︎" || "♝" || "♞" || "♜" || "♛")) {
+            captures.push({ row: i, column: j });
+          }
+          break;
+        }
+      }
+      setSelectedPiecePossibleMoves(possibleMoves);
+    }
     // need to add piece capture logic
     // need to add piece promotion logic
     // need to add checkmate logic
@@ -389,6 +435,49 @@ function Chessboard({ playerColor = "white", rowL, columnL }) {
         } else {
           if (chessboard[row][i].startsWith("♟︎" || "♝" || "♞" || "♜" || "♛")) {
             captures.push({ row, column: i });
+          }
+          break;
+        }
+      }
+    }
+    // Bishop possible moves
+    if (piece === pieces.white.bishop) {
+      for (let i = row - 1, j = column - 1; i >= 0 && j >= 0; i--, j--) {
+        if (chessboard[i][j] === "") {
+          moves.push({ row: i, column: j });
+        } else {
+          if (chessboard[i][j].startsWith("♟︎" || "♝" || "♞" || "♜" || "♛")) {
+            captures.push({ row: i, column: j });
+          }
+          break;
+        }
+      }
+      for (let i = row - 1, j = column + 1; i >= 0 && j < 8; i--, j++) {
+        if (chessboard[i][j] === "") {
+          moves.push({ row: i, column: j });
+        } else {
+          if (chessboard[i][j].startsWith("♟︎" || "♝" || "♞" || "♜" || "♛")) {
+            captures.push({ row: i, column: j });
+          }
+          break;
+        }
+      }
+      for (let i = row + 1, j = column - 1; i < 8 && j >= 0; i++, j--) {
+        if (chessboard[i][j] === "") {
+          moves.push({ row: i, column: j });
+        } else {
+          if (chessboard[i][j].startsWith("♟︎" || "♝" || "♞" || "♜" || "♛")) {
+            captures.push({ row: i, column: j });
+          }
+          break;
+        }
+      }
+      for (let i = row + 1, j = column + 1; i < 8 && j < 8; i++, j++) {
+        if (chessboard[i][j] === "") {
+          moves.push({ row: i, column: j });
+        } else {
+          if (chessboard[i][j].startsWith("♟︎" || "♝" || "♞" || "♜" || "♛")) {
+            captures.push({ row: i, column: j });
           }
           break;
         }
